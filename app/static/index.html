@@ -1,0 +1,373 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Automated Multi-Platform Posting Dashboard</title>
+  <link rel="stylesheet" href="/static/style.css">
+</head>
+<body>
+
+  <!-- Header -->
+  <header class="app-header">
+    <div class="container header-inner">
+      <div class="brand-badge">
+        <div class="brand-icon">
+          <svg width="20" height="20" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8.684 13.342C8.886 12.938 9 12.482 9 12c0-.482-.114-.938-.316-1.342m0 2.684a3 3 0 110-2.684m0 2.684l6.632 3.316m-6.632-6l6.632-3.316m0 0a3 3 0 105.367-2.684 3 3 0 00-5.367 2.684zm0 9.316a3 3 0 105.368 2.684 3 3 0 00-5.368-2.684z" />
+          </svg>
+        </div>
+        <div style="display: flex; align-items: center;">
+          <span class="brand-title">OmniPost AI</span>
+          <span class="model-pill">5 Platforms Integrated</span>
+        </div>
+      </div>
+      <div class="header-actions">
+        <a href="/docs" target="_blank" class="nav-link">
+          <svg width="14" height="14" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 20l4-16m4 4l4 4-4 4M6 16l-4-4 4-4" />
+          </svg>
+          Swagger Docs
+        </a>
+        <a href="https://github.com/bharidey-saranya/automated-posting" target="_blank" class="nav-link">
+          GitHub Repo
+        </a>
+      </div>
+    </div>
+  </header>
+
+  <!-- Main Content -->
+  <main class="container main-content">
+
+    <!-- Hero -->
+    <section class="hero-section">
+      <h1 class="hero-title">Automated Multi-Platform Broadcasting</h1>
+      <p class="hero-desc">Dispatch marketing announcements across Telegram, Discord, Slack, Mastodon, and Reddit with unified CTA validation and fault-tolerant concurrency.</p>
+    </section>
+
+    <!-- Platform Showcase Grid -->
+    <div class="platforms-grid">
+      <div class="platform-pill-card">
+        <div class="platform-icon-circle" style="background: #229ED9;">TG</div>
+        <div>
+          <div class="platform-info-name">Telegram</div>
+          <div class="platform-info-sub">Public Channel Broadcast</div>
+        </div>
+      </div>
+      <div class="platform-pill-card">
+        <div class="platform-icon-circle" style="background: #5865F2;">DC</div>
+        <div>
+          <div class="platform-info-name">Discord</div>
+          <div class="platform-info-sub">Community Webhook</div>
+        </div>
+      </div>
+      <div class="platform-pill-card">
+        <div class="platform-icon-circle" style="background: #E01E5A;">SL</div>
+        <div>
+          <div class="platform-info-name">Slack</div>
+          <div class="platform-info-sub">Workspace Incoming Hook</div>
+        </div>
+      </div>
+      <div class="platform-pill-card">
+        <div class="platform-icon-circle" style="background: #6364FF;">MS</div>
+        <div>
+          <div class="platform-info-name">Mastodon</div>
+          <div class="platform-info-sub">Decentralized Fediverse</div>
+        </div>
+      </div>
+      <div class="platform-pill-card">
+        <div class="platform-icon-circle" style="background: #FF4500;">RD</div>
+        <div>
+          <div class="platform-info-name">Reddit</div>
+          <div class="platform-info-sub">Subreddit Link Submission</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Message Input Form -->
+    <div class="form-card">
+      <form id="postingForm">
+        <div class="textarea-wrap">
+          <textarea
+            id="messageInput"
+            required
+            rows="3"
+            class="message-input"
+            placeholder="Type your message with exactly 1 CTA link (max 200 chars)..."
+          >Check out our latest business platform and grow your online visibility. https://example.com</textarea>
+        </div>
+
+        <div class="input-footer">
+          <div>
+            <span>Characters: </span>
+            <span id="charCount" class="counter-badge valid">87 / 200</span>
+          </div>
+          <div id="ctaContainer" class="cta-preview">
+            <span>CTA Link: </span>
+            <span id="ctaBadge" class="cta-pill">https://example.com</span>
+          </div>
+        </div>
+
+        <button type="submit" id="submitBtn" class="submit-btn">
+          <svg width="18" height="18" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 19l9 2-9-18-9 18 9-2zm0 0v-8" />
+          </svg>
+          <span>Publish to All 5 Platforms</span>
+        </button>
+      </form>
+
+      <!-- Quick sample pills -->
+      <div class="sample-bar">
+        <span>Try sample messages:</span>
+        <button type="button" onclick="setSample('Check out our latest business platform and grow your online visibility. https://example.com')" class="sample-pill">Official Test Prompt</button>
+        <button type="button" onclick="setSample('Excited to announce our new developer API! Start shipping today at https://stripe.com')" class="sample-pill">Developer Product</button>
+        <button type="button" onclick="setSample('Streamline your engineering sprints with modern velocity tools https://linear.app')" class="sample-pill">SaaS Tool</button>
+        <button type="button" onclick="setSample('Discover the latest AI automation insights https://dxora.com/blog')" class="sample-pill">Blog Article</button>
+      </div>
+    </div>
+
+    <!-- Error Banner -->
+    <div id="errorBanner" class="error-banner hidden">
+      <svg width="20" height="20" fill="none" stroke="currentColor" viewBox="0 0 24 24" style="flex-shrink: 0; margin-top: 2px;">
+        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4m0 4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
+      </svg>
+      <div>
+        <strong id="errorTitle">Input Validation Error</strong>
+        <p id="errorDetail" style="margin-top: 0.2rem;"></p>
+      </div>
+    </div>
+
+    <!-- Loading Box -->
+    <div id="loadingState" class="loading-box hidden">
+      <div class="spinner-wrap">
+        <div class="spinner-ring"></div>
+      </div>
+      <h3 style="font-size: 1.05rem; font-weight: 700; color: #fff;">Broadcasting Message</h3>
+      <p style="font-size: 0.8rem; color: var(--text-muted); margin-top: 0.25rem;">Dispatching concurrent API requests to Telegram, Discord, Slack, Mastodon & Reddit...</p>
+    </div>
+
+    <!-- Results Section -->
+    <section id="resultsSection" class="results-wrapper hidden">
+      <div class="results-header">
+        <div>
+          <h2 style="font-size: 1.15rem; font-weight: 700; color: #fff;">Multi-Platform Broadcasting Results</h2>
+          <p style="font-size: 0.78rem; color: var(--text-muted); margin-top: 0.2rem;">All 5 platform drivers executed concurrently with independent failure isolation.</p>
+        </div>
+        <div class="results-stats">
+          <div class="stat-item">
+            <span>Successful:</span>
+            <span id="successCount" class="stat-badge success">5</span>
+          </div>
+          <div class="stat-item">
+            <span>Failed:</span>
+            <span id="failedCount" class="stat-badge failed">0</span>
+          </div>
+          <button onclick="downloadReport()" class="btn-secondary">
+            <svg width="14" height="14" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-4l-4 4m0 0l-4-4m4 4V4"/>
+            </svg>
+            <span>Download Report (.md)</span>
+          </button>
+          <button onclick="copyJson()" class="btn-secondary">
+            <svg width="14" height="14" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 16H6a2 2 0 01-2-2V6a2 2 0 012-2h8a2 2 0 012 2v2m-6 12h8a2 2 0 002-2v-8a2 2 0 00-2-2h-8a2 2 0 00-2 2v8a2 2 0 002 2z"/>
+            </svg>
+            <span id="copyBtnText">Copy JSON</span>
+          </button>
+        </div>
+      </div>
+
+      <!-- Results Table -->
+      <div class="table-wrap">
+        <table class="results-table">
+          <thead>
+            <tr>
+              <th>Platform</th>
+              <th>Status</th>
+              <th>Published URL</th>
+              <th>Access</th>
+              <th>Date</th>
+              <th>Time (UTC)</th>
+              <th>Error</th>
+            </tr>
+          </thead>
+          <tbody id="resultsTableBody"></tbody>
+        </table>
+      </div>
+
+      <!-- Raw JSON Details -->
+      <div>
+        <h4 style="font-size: 0.85rem; font-weight: 600; color: #fff; margin-bottom: 0.5rem;">Raw Response Payload</h4>
+        <pre id="rawJsonViewer" class="code-viewer"></pre>
+      </div>
+    </section>
+
+  </main>
+
+  <!-- Footer -->
+  <footer class="app-footer">
+    <p>Automated Multi-Platform Posting System • Built with FastAPI, Pydantic & HTTPX</p>
+  </footer>
+
+  <script>
+    let currentResponseData = null;
+    const messageInput = document.getElementById('messageInput');
+    const charCount = document.getElementById('charCount');
+    const ctaBadge = document.getElementById('ctaBadge');
+
+    function updatePreview() {
+      const text = messageInput.value;
+      const len = text.length;
+      charCount.textContent = `${len} / 200`;
+
+      if (len > 200) {
+        charCount.className = 'counter-badge invalid';
+      } else {
+        charCount.className = 'counter-badge valid';
+      }
+
+      // Regex matching URLs
+      const urlRegex = /(?:https?:\/\/)(?:[a-zA-Z0-9_\-\.]+\.[a-zA-Z]{2,}|localhost|\d{1,3}\.\d{1,3}\.\d{1,3}\.\d{1,3})(?::\d+)?(?:\/[^\s]*)?/gi;
+      const matches = text.match(urlRegex) || [];
+
+      if (matches.length === 1) {
+        ctaBadge.textContent = matches[0].replace(/[.,;!?)"']+$/, '');
+        ctaBadge.style.color = '#34d399';
+        ctaBadge.style.borderColor = 'rgba(16, 185, 129, 0.3)';
+      } else if (matches.length === 0) {
+        ctaBadge.textContent = 'No CTA link detected (Required)';
+        ctaBadge.style.color = '#f87171';
+        ctaBadge.style.borderColor = 'rgba(239, 68, 68, 0.3)';
+      } else {
+        ctaBadge.textContent = `${matches.length} CTA links detected (Max 1 allowed)`;
+        ctaBadge.style.color = '#f87171';
+        ctaBadge.style.borderColor = 'rgba(239, 68, 68, 0.3)';
+      }
+    }
+
+    messageInput.addEventListener('input', updatePreview);
+    updatePreview();
+
+    function setSample(msg) {
+      messageInput.value = msg;
+      updatePreview();
+    }
+
+    function copyJson() {
+      if (!currentResponseData) return;
+      navigator.clipboard.writeText(JSON.stringify(currentResponseData, null, 2));
+      const btn = document.getElementById('copyBtnText');
+      btn.textContent = 'Copied!';
+      setTimeout(() => { btn.textContent = 'Copy JSON'; }, 2000);
+    }
+
+    function downloadReport() {
+      if (!currentResponseData) return;
+      const res = currentResponseData.results || [];
+      const md = `# Multi-Platform Broadcast Report
+**Submitted Message:** ${messageInput.value}  
+**Date:** ${new Date().toISOString()}  
+
+---
+
+## Results Summary
+${res.map(r => `
+### ${r.platform} - Status: ${r.status.toUpperCase()}
+- **Published URL:** ${r.posted_url || 'N/A'}
+- **Public Access:** ${r.public_access ? 'Yes (Public)' : 'No (Workspace Protected)'}
+- **Date & Time:** ${r.date || 'N/A'} ${r.time || ''}
+${r.error ? `- **Error Detail:** ${r.error}` : ''}
+`).join('\n')}
+`;
+      const blob = new Blob([md], { type: 'text/markdown;charset=utf-8;' });
+      const link = document.createElement('a');
+      link.href = URL.createObjectURL(blob);
+      link.download = `posting-report-${Date.now()}.md`;
+      link.click();
+    }
+
+    document.getElementById('postingForm').addEventListener('submit', async (e) => {
+      e.preventDefault();
+      const message = messageInput.value.trim();
+      const submitBtn = document.getElementById('submitBtn');
+      const errorBanner = document.getElementById('errorBanner');
+      const loadingState = document.getElementById('loadingState');
+      const resultsSection = document.getElementById('resultsSection');
+
+      submitBtn.disabled = true;
+      errorBanner.classList.add('hidden');
+      resultsSection.classList.add('hidden');
+      loadingState.classList.remove('hidden');
+
+      try {
+        const res = await fetch('/posting', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ message: message })
+        });
+
+        const data = await res.json();
+
+        if (!res.ok) {
+          throw new Error(data.detail || data.error || 'Server validation error');
+        }
+
+        currentResponseData = data;
+        renderResults(data);
+
+        loadingState.classList.add('hidden');
+        resultsSection.classList.remove('hidden');
+      } catch (err) {
+        loadingState.classList.add('hidden');
+        errorBanner.classList.remove('hidden');
+        document.getElementById('errorTitle').textContent = 'Validation / Request Error';
+        document.getElementById('errorDetail').textContent = err.message || 'Failed to submit message';
+      } finally {
+        submitBtn.disabled = false;
+      }
+    });
+
+    function renderResults(data) {
+      const results = data.results || [];
+      const successes = results.filter(r => r.status === 'success').length;
+      const failures = results.filter(r => r.status === 'failed').length;
+
+      document.getElementById('successCount').textContent = successes;
+      document.getElementById('failedCount').textContent = failures;
+
+      const tbody = document.getElementById('resultsTableBody');
+      tbody.innerHTML = results.map(r => `
+        <tr>
+          <td><strong>${r.platform}</strong></td>
+          <td>
+            <span class="status-pill ${r.status}">
+              ${r.status === 'success' ? '✓ Success' : '✕ Failed'}
+            </span>
+          </td>
+          <td>
+            ${r.posted_url
+              ? `<a href="${r.posted_url}" target="_blank" class="post-link">${r.posted_url}</a>`
+              : '<span style="color: var(--text-muted);">None</span>'
+            }
+          </td>
+          <td>
+            <span class="access-pill ${r.public_access ? 'public' : 'private'}">
+              ${r.public_access ? 'Public' : 'Protected'}
+            </span>
+          </td>
+          <td>${r.date || '—'}</td>
+          <td>${r.time || '—'}</td>
+          <td>
+            ${r.error
+              ? `<span style="color: var(--accent-danger); font-size: 0.75rem;">${r.error}</span>`
+              : '<span style="color: var(--accent-success);">None</span>'
+            }
+          </td>
+        </tr>
+      `).join('');
+
+      document.getElementById('rawJsonViewer').textContent = JSON.stringify(data, null, 2);
+    }
+  </script>
+</body>
+</html>

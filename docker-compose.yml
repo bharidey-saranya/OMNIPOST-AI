@@ -1,0 +1,16 @@
+version: "3.8"
+
+services:
+  automated-posting:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: automated_posting_api
+    ports:
+      - "4000:4000"
+    env_file:
+      - .env
+    environment:
+      - HOST=0.0.0.0
+      - PORT=4000
+    restart: unless-stopped
