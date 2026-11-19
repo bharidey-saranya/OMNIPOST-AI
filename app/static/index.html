@@ -1,18 +1,55 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" data-theme="dark">
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>OmniPost AI — Multi-Platform Broadcasting Console</title>
-  <link rel="stylesheet" href="/static/style.css?v=3.0">
+  <link rel="stylesheet" href="/static/style.css?v=4.0">
+  <script>
+    // Immediate Theme Initialization to prevent white/dark flash
+    (function() {
+      try {
+        const savedTheme = localStorage.getItem('omnipost-theme') || 'dark';
+        document.documentElement.setAttribute('data-theme', savedTheme);
+      } catch (e) {}
+    })();
+  </script>
   <style>
-    /* Inlined Critical Light Theme Overrides */
+    /* Critical Anti-Stacking & Theme Enforcement */
+    .saas-table td:nth-child(2) {
+      white-space: nowrap !important;
+      width: 115px !important;
+      min-width: 115px !important;
+    }
     .status-pill {
       display: inline-flex !important;
       flex-direction: row !important;
+      flex-wrap: nowrap !important;
       align-items: center !important;
-      gap: 0.35rem !important;
+      justify-content: center !important;
+      gap: 6px !important;
+      padding: 4px 10px !important;
+      border-radius: 9999px !important;
+      font-size: 0.76rem !important;
+      font-weight: 600 !important;
       white-space: nowrap !important;
+      word-break: keep-all !important;
+      line-height: 1 !important;
+      width: max-content !important;
+      min-width: 84px !important;
+    }
+    .status-pill svg {
+      width: 13px !important;
+      height: 13px !important;
+      flex-shrink: 0 !important;
+      display: inline-block !important;
+      margin: 0 !important;
+    }
+    .status-pill span {
+      display: inline !important;
+      white-space: nowrap !important;
+      line-height: 1 !important;
+      margin: 0 !important;
     }
   </style>
 </head>
@@ -51,7 +88,14 @@
           </button>
         </nav>
       </div>
+
       <div class="nav-actions">
+        <!-- Theme Toggle Button (Light / Dark Mode) -->
+        <button type="button" id="themeToggleBtn" onclick="toggleTheme()" class="theme-toggle-btn" title="Toggle Light / Dark Mode">
+          <span id="themeToggleIcon" style="display: flex; align-items: center;"></span>
+          <span id="themeToggleText">Theme</span>
+        </button>
+
         <div class="status-indicator">
           <span class="status-dot"></span>
           <span>API Online :4000</span>
@@ -67,14 +111,14 @@
         <div class="breadcrumb-trail">
           <span>Broadcaster</span>
           <span>/</span>
-          <span style="color: var(--text-secondary);">New Multi-Platform Dispatch</span>
+          <span style="color: var(--text-muted);">New Multi-Platform Dispatch</span>
         </div>
         <h1 class="workspace-heading">Announcement Console</h1>
         <p class="workspace-description">Publish verified marketing updates and releases with single-link CTA validation across 5 platforms in parallel.</p>
       </div>
       <div class="workspace-badges">
-        <span class="version-tag" style="background:#ffffff;">Concurrency: asyncio.gather</span>
-        <span class="version-tag" style="background:#ffffff;">Isolation: Fault-Tolerant</span>
+        <span class="version-tag" style="background: var(--bg-surface); border: 1px solid var(--border-default);">Concurrency: asyncio.gather</span>
+        <span class="version-tag" style="background: var(--bg-surface); border: 1px solid var(--border-default);">Isolation: Fault-Tolerant</span>
       </div>
     </div>
   </section>
@@ -82,38 +126,61 @@
   <!-- Main Work Area -->
   <main class="console-container main-content" style="padding-top: 0;">
 
-    <!-- Connected Platforms Status Strip -->
+    <!-- Connected Platforms Status Strip with Official Logos -->
     <section class="platforms-strip">
       <div class="strip-label">
-        <svg width="16" height="16" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+        <svg width="15" height="15" fill="none" stroke="currentColor" viewBox="0 0 24 24">
           <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 10V3L4 14h7v7l9-11h-7z" />
         </svg>
         <span>Connected Networks (5 Active)</span>
       </div>
       <div class="connected-chips-row">
+        <!-- Telegram -->
         <div class="platform-chip">
-          <span class="platform-dot tg"></span>
-          <span>Telegram</span>
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" style="flex-shrink:0;">
+            <path fill="#229ED9" d="M12 24c6.627 0 12-5.373 12-12S18.627 0 12 0 0 5.373 0 12s5.373 12 12 12z"/>
+            <path fill="#ffffff" d="M5.41 11.85l12.44-4.8c.57-.22 1.08.13.89.98l-2.12 9.98c-.15.7-.58.87-1.16.54l-3.25-2.39-1.57 1.51c-.17.18-.32.32-.66.32l.23-3.32 6.05-5.46c.26-.23-.06-.36-.4-.14l-7.48 4.71-3.22-1c-.7-.22-.72-.7.15-1.03z"/>
+          </svg>
+          <span style="font-weight: 700;">Telegram</span>
           <span class="chip-tag">Public</span>
         </div>
+
+        <!-- Discord -->
         <div class="platform-chip">
-          <span class="platform-dot dc"></span>
-          <span>Discord</span>
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="#5865F2" style="flex-shrink:0;">
+            <path d="M20.317 4.37a19.791 19.791 0 0 0-4.885-1.515.074.074 0 0 0-.079.037c-.21.375-.444.864-.608 1.25a18.27 18.27 0 0 0-5.487 0 12.64 12.64 0 0 0-.617-1.25.077.077 0 0 0-.079-.037A19.736 19.736 0 0 0 3.677 4.37a.07.07 0 0 0-.032.027C.533 9.046-.32 13.58.099 18.057a.082.082 0 0 0 .031.057 19.9 19.9 0 0 0 5.993 3.03.078.078 0 0 0 .084-.028c.462-.63.874-1.295 1.226-1.994.021-.041.001-.09-.041-.106a13.107 13.107 0 0 1-1.872-.892.077.077 0 0 1-.008-.128 10.2 10.2 0 0 0 .372-.292.074.074 0 0 1 .077-.01c3.929 1.793 8.18 1.793 12.061 0a.074.074 0 0 1 .078.01c.12.098.246.198.373.292a.077.077 0 0 1-.006.127 12.299 12.299 0 0 1-1.873.893.077.077 0 0 0-.041.107c.36.698.772 1.362 1.225 1.993a.076.076 0 0 0 .084.028 19.839 19.839 0 0 0 6.002-3.03.077.077 0 0 0 .032-.054c.5-5.177-.838-9.674-3.549-13.66a.061.061 0 0 0-.031-.028zM8.02 15.33c-1.183 0-2.157-1.085-2.157-2.419 0-1.333.956-2.419 2.157-2.419 1.21 0 2.176 1.096 2.157 2.42 0 1.333-.956 2.418-2.157 2.418zm7.975 0c-1.183 0-2.157-1.085-2.157-2.419 0-1.333.955-2.419 2.157-2.419 1.21 0 2.176 1.096 2.157 2.42 0 1.333-.946 2.418-2.157 2.418z"/>
+          </svg>
+          <span style="font-weight: 700;">Discord</span>
           <span class="chip-tag">Public</span>
         </div>
+
+        <!-- Slack -->
         <div class="platform-chip">
-          <span class="platform-dot sl"></span>
-          <span>Slack</span>
+          <svg width="18" height="18" viewBox="0 0 24 24" style="flex-shrink:0;">
+            <path fill="#E01E5A" d="M5.042 15.165a2.528 2.528 0 0 1-2.52 2.523A2.528 2.528 0 0 1 0 15.165a2.527 2.527 0 0 1 2.522-2.52h2.52v2.52zm1.271 0a2.527 2.527 0 0 1 2.521-2.52 2.527 2.527 0 0 1 2.521 2.52v6.313A2.528 2.528 0 0 1 8.834 24a2.528 2.528 0 0 1-2.521-2.522v-6.313z"/>
+            <path fill="#36C5F0" d="M8.834 5.042a2.528 2.528 0 0 1-2.521-2.52A2.528 2.528 0 0 1 8.834 0a2.528 2.528 0 0 1 2.521 2.522v2.52H8.834zm0 1.271a2.528 2.528 0 0 1 2.521 2.521 2.528 2.528 0 0 1-2.521 2.521H2.522A2.528 2.528 0 0 1 0 8.834a2.528 2.528 0 0 1 2.522-2.521h6.312z"/>
+            <path fill="#2EB67D" d="M18.956 8.834a2.528 2.528 0 0 1 2.522-2.521A2.528 2.528 0 0 1 24 8.834a2.528 2.528 0 0 1-2.522 2.521h-2.522V8.834zm-1.27 0a2.528 2.528 0 0 1-2.522 2.521 2.527 2.527 0 0 1-2.52-2.521V2.522A2.527 2.527 0 0 1 15.164 0a2.528 2.528 0 0 1 2.522 2.522v6.312z"/>
+            <path fill="#ECB22E" d="M15.164 18.956a2.528 2.528 0 0 1 2.522 2.522A2.528 2.528 0 0 1 15.164 24a2.527 2.527 0 0 1-2.52-2.522v-2.522h2.52zm0-1.27a2.528 2.528 0 0 1-2.52-2.522 2.527 2.527 0 0 1 2.52-2.521h6.314A2.528 2.528 0 0 1 24 15.164a2.528 2.528 0 0 1-2.522 2.522h-6.314z"/>
+          </svg>
+          <span style="font-weight: 700;">Slack</span>
           <span class="chip-tag">Workspace</span>
         </div>
+
+        <!-- Mastodon -->
         <div class="platform-chip">
-          <span class="platform-dot ms"></span>
-          <span>Mastodon</span>
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="#6364FF" style="flex-shrink:0;">
+            <path d="M23.267 12.289c0 4.62-2.78 8.16-5.834 8.76-2.126.417-4.248.497-6.353.313-1.468-.128-2.822-.44-3.882-.942-.047-.022-.078-.07-.07-.123l.163-1.89c.007-.08.083-.138.163-.122 1.096.22 2.222.378 3.398.397 2.062.033 4.22-.224 4.542-1.748.039-.187.054-.383.054-.588v-.76c-1.39.544-2.89.84-4.453.84-2.158 0-4.08-.553-5.328-1.57C3.968 13.52 3.5 11.53 3.5 9.077c0-2.316.517-4.148 1.547-5.467C6.082 2.283 7.632 1.6 9.68 1.55c2.274-.055 4.512.285 6.47 1.05 1.594.622 2.766 1.708 3.504 3.242.747 1.55.992 3.57.992 6.046v.401h-2.38v-.4c0-1.888-.172-3.238-.517-4.04-.342-.796-.98-1.28-1.91-1.45-1.56-.285-3.136-.277-4.708.024-.925.178-1.55.666-1.88 1.465-.33.79-.494 2.14-.494 4.05 0 2.222.25 3.666.75 4.333.5.667 1.46 1.002 2.88 1.002 1.13 0 2.26-.172 3.39-.516.14-.042.27-.168.27-.323v-3.79h2.38v4.29z"/>
+          </svg>
+          <span style="font-weight: 700;">Mastodon</span>
           <span class="chip-tag">Public</span>
         </div>
+
+        <!-- Reddit -->
         <div class="platform-chip">
-          <span class="platform-dot rd"></span>
-          <span>Reddit</span>
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="#FF4500" style="flex-shrink:0;">
+            <path d="M12 0A12 12 0 0 0 0 12a12 12 0 0 0 12 12 12 12 0 0 0 12-12A12 12 0 0 0 12 0zm5.01 4.744c.688 0 1.25.561 1.25 1.249a1.25 1.25 0 0 1-2.498.056l-2.597-.547-.8 3.747c1.824.07 3.48.632 4.674 1.488.308-.309.73-.491 1.207-.491.968 0 1.754.786 1.754 1.754 0 .716-.435 1.333-1.01 1.614a3.111 3.111 0 0 1 .042.52c0 2.694-3.13 4.87-7.004 4.87-3.874 0-7.004-2.176-7.004-4.87 0-.183.015-.366.043-.534A1.748 1.748 0 0 1 4.028 12c0-.968.786-1.754 1.754-1.754.463 0 .898.196 1.207.49 1.207-.883 2.878-1.43 4.744-1.487l.885-4.182a.342.342 0 0 1 .14-.197.35.35 0 0 1 .238-.042l2.906.617a1.214 1.214 0 0 1 1.108-.702zM9.25 12C8.561 12 8 12.562 8 13.25c0 .687.561 1.248 1.25 1.248.687 0 1.248-.561 1.248-1.249 0-.688-.561-1.249-1.249-1.249zm5.5 0c-.687 0-1.248.561-1.248 1.25 0 .687.561 1.248 1.249 1.248.688 0 1.249-.561 1.249-1.249 0-.688-.562-1.249-1.25-1.249zm-5.466 3.99a.327.327 0 0 0-.231.094.33.33 0 0 0 0 .463c.842.842 2.484.913 2.961.913.477 0 2.105-.056 2.961-.913a.361.361 0 0 0 .029-.463.33.33 0 0 0-.464 0c-.547.533-1.684.73-2.512.73-.828 0-1.979-.196-2.512-.73a.326.326 0 0 0-.232-.095z"/>
+          </svg>
+          <span style="font-weight: 700;">Reddit</span>
           <span class="chip-tag">Public</span>
         </div>
       </div>
@@ -155,19 +222,36 @@
             </div>
           </div>
 
-          <!-- Target Destinations & Action Row -->
+          <!-- Target Destinations & Action Row (Dispatch on the Right) -->
           <div class="target-selection-row">
             <div class="target-platforms-tags">
               <span style="font-size: 0.75rem; font-weight: 600; color: var(--text-muted); margin-right: 0.25rem;">Destinations:</span>
-              <span class="target-tag">✓ Telegram Channel</span>
-              <span class="target-tag">✓ Discord Webhook</span>
-              <span class="target-tag">✓ Slack Incoming</span>
-              <span class="target-tag">✓ Mastodon Fediverse</span>
-              <span class="target-tag">✓ Reddit Community</span>
+              <span class="target-tag">
+                <svg width="13" height="13" viewBox="0 0 24 24" fill="#229ED9"><circle cx="12" cy="12" r="10"/></svg>
+                Telegram
+              </span>
+              <span class="target-tag">
+                <svg width="13" height="13" viewBox="0 0 24 24" fill="#5865F2"><circle cx="12" cy="12" r="10"/></svg>
+                Discord
+              </span>
+              <span class="target-tag">
+                <svg width="13" height="13" viewBox="0 0 24 24" fill="#E01E5A"><circle cx="12" cy="12" r="10"/></svg>
+                Slack
+              </span>
+              <span class="target-tag">
+                <svg width="13" height="13" viewBox="0 0 24 24" fill="#6364FF"><circle cx="12" cy="12" r="10"/></svg>
+                Mastodon
+              </span>
+              <span class="target-tag">
+                <svg width="13" height="13" viewBox="0 0 24 24" fill="#FF4500"><circle cx="12" cy="12" r="10"/></svg>
+                Reddit
+              </span>
             </div>
-            <div class="composer-actions">
+
+            <!-- Positioned on the Right with Gradient Hover Button -->
+            <div class="composer-actions-right">
               <button type="button" onclick="clearComposer()" class="btn-ghost">Reset</button>
-              <button type="submit" id="submitBtn" class="btn-primary-action">
+              <button type="submit" id="submitBtn" class="btn-dispatch-gradient">
                 <svg width="15" height="15" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                   <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 19l9 2-9-18-9 18 9-2zm0 0v-8" />
                 </svg>
@@ -252,8 +336,8 @@
         <table class="saas-table">
           <thead>
             <tr>
-              <th>Platform</th>
-              <th>Status</th>
+              <th style="min-width: 140px;">Platform</th>
+              <th style="min-width: 115px; width: 115px;">Status</th>
               <th>Published URL</th>
               <th>Access Level</th>
               <th>Date & Time (UTC)</th>
@@ -351,6 +435,40 @@
     const messageInput = document.getElementById('messageInput');
     const charCount = document.getElementById('charCount');
     const ctaBadge = document.getElementById('ctaBadge');
+
+    // Vector Brand Logos for Results Table
+    const PLATFORM_LOGOS = {
+      'Telegram': `<svg width="18" height="18" viewBox="0 0 24 24" fill="none" style="flex-shrink:0;"><path fill="#229ED9" d="M12 24c6.627 0 12-5.373 12-12S18.627 0 12 0 0 5.373 0 12s5.373 12 12 12z"/><path fill="#ffffff" d="M5.41 11.85l12.44-4.8c.57-.22 1.08.13.89.98l-2.12 9.98c-.15.7-.58.87-1.16.54l-3.25-2.39-1.57 1.51c-.17.18-.32.32-.66.32l.23-3.32 6.05-5.46c.26-.23-.06-.36-.4-.14l-7.48 4.71-3.22-1c-.7-.22-.72-.7.15-1.03z"/></svg>`,
+      'Discord': `<svg width="18" height="18" viewBox="0 0 24 24" fill="#5865F2" style="flex-shrink:0;"><path d="M20.317 4.37a19.791 19.791 0 0 0-4.885-1.515.074.074 0 0 0-.079.037c-.21.375-.444.864-.608 1.25a18.27 18.27 0 0 0-5.487 0 12.64 12.64 0 0 0-.617-1.25.077.077 0 0 0-.079-.037A19.736 19.736 0 0 0 3.677 4.37a.07.07 0 0 0-.032.027C.533 9.046-.32 13.58.099 18.057a.082.082 0 0 0 .031.057 19.9 19.9 0 0 0 5.993 3.03.078.078 0 0 0 .084-.028c.462-.63.874-1.295 1.226-1.994.021-.041.001-.09-.041-.106a13.107 13.107 0 0 1-1.872-.892.077.077 0 0 1-.008-.128 10.2 10.2 0 0 0 .372-.292.074.074 0 0 1 .077-.01c3.929 1.793 8.18 1.793 12.061 0a.074.074 0 0 1 .078.01c.12.098.246.198.373.292a.077.077 0 0 1-.006.127 12.299 12.299 0 0 1-1.873.893.077.077 0 0 0-.041.107c.36.698.772 1.362 1.225 1.993a.076.076 0 0 0 .084.028 19.839 19.839 0 0 0 6.002-3.03.077.077 0 0 0 .032-.054c.5-5.177-.838-9.674-3.549-13.66a.061.061 0 0 0-.031-.028zM8.02 15.33c-1.183 0-2.157-1.085-2.157-2.419 0-1.333.956-2.419 2.157-2.419 1.21 0 2.176 1.096 2.157 2.42 0 1.333-.956 2.418-2.157 2.418zm7.975 0c-1.183 0-2.157-1.085-2.157-2.419 0-1.333.955-2.419 2.157-2.419 1.21 0 2.176 1.096 2.157 2.42 0 1.333-.946 2.418-2.157 2.418z"/></svg>`,
+      'Slack': `<svg width="18" height="18" viewBox="0 0 24 24" style="flex-shrink:0;"><path fill="#E01E5A" d="M5.042 15.165a2.528 2.528 0 0 1-2.52 2.523A2.528 2.528 0 0 1 0 15.165a2.527 2.527 0 0 1 2.522-2.52h2.52v2.52zm1.271 0a2.527 2.527 0 0 1 2.521-2.52 2.527 2.527 0 0 1 2.521 2.52v6.313A2.528 2.528 0 0 1 8.834 24a2.528 2.528 0 0 1-2.521-2.522v-6.313z"/><path fill="#36C5F0" d="M8.834 5.042a2.528 2.528 0 0 1-2.521-2.52A2.528 2.528 0 0 1 8.834 0a2.528 2.528 0 0 1 2.521 2.522v2.52H8.834zm0 1.271a2.528 2.528 0 0 1 2.521 2.521 2.528 2.528 0 0 1-2.521 2.521H2.522A2.528 2.528 0 0 1 0 8.834a2.528 2.528 0 0 1 2.522-2.521h6.312z"/><path fill="#2EB67D" d="M18.956 8.834a2.528 2.528 0 0 1 2.522-2.521A2.528 2.528 0 0 1 24 8.834a2.528 2.528 0 0 1-2.522 2.521h-2.522V8.834zm-1.27 0a2.528 2.528 0 0 1-2.522 2.521 2.527 2.527 0 0 1-2.52-2.521V2.522A2.527 2.527 0 0 1 15.164 0a2.528 2.528 0 0 1 2.522 2.522v6.312z"/><path fill="#ECB22E" d="M15.164 18.956a2.528 2.528 0 0 1 2.522 2.522A2.528 2.528 0 0 1 15.164 24a2.527 2.527 0 0 1-2.52-2.522v-2.522h2.52zm0-1.27a2.528 2.528 0 0 1-2.52-2.522 2.527 2.527 0 0 1 2.52-2.521h6.314A2.528 2.528 0 0 1 24 15.164a2.528 2.528 0 0 1-2.522 2.522h-6.314z"/></svg>`,
+      'Mastodon': `<svg width="18" height="18" viewBox="0 0 24 24" fill="#6364FF" style="flex-shrink:0;"><path d="M23.267 12.289c0 4.62-2.78 8.16-5.834 8.76-2.126.417-4.248.497-6.353.313-1.468-.128-2.822-.44-3.882-.942-.047-.022-.078-.07-.07-.123l.163-1.89c.007-.08.083-.138.163-.122 1.096.22 2.222.378 3.398.397 2.062.033 4.22-.224 4.542-1.748.039-.187.054-.383.054-.588v-.76c-1.39.544-2.89.84-4.453.84-2.158 0-4.08-.553-5.328-1.57C3.968 13.52 3.5 11.53 3.5 9.077c0-2.316.517-4.148 1.547-5.467C6.082 2.283 7.632 1.6 9.68 1.55c2.274-.055 4.512.285 6.47 1.05 1.594.622 2.766 1.708 3.504 3.242.747 1.55.992 3.57.992 6.046v.401h-2.38v-.4c0-1.888-.172-3.238-.517-4.04-.342-.796-.98-1.28-1.91-1.45-1.56-.285-3.136-.277-4.708.024-.925.178-1.55.666-1.88 1.465-.33.79-.494 2.14-.494 4.05 0 2.222.25 3.666.75 4.333.5.667 1.46 1.002 2.88 1.002 1.13 0 2.26-.172 3.39-.516.14-.042.27-.168.27-.323v-3.79h2.38v4.29z"/></svg>`,
+      'Reddit': `<svg width="18" height="18" viewBox="0 0 24 24" fill="#FF4500" style="flex-shrink:0;"><path d="M12 0A12 12 0 0 0 0 12a12 12 0 0 0 12 12 12 12 0 0 0 12-12A12 12 0 0 0 12 0zm5.01 4.744c.688 0 1.25.561 1.25 1.249a1.25 1.25 0 0 1-2.498.056l-2.597-.547-.8 3.747c1.824.07 3.48.632 4.674 1.488.308-.309.73-.491 1.207-.491.968 0 1.754.786 1.754 1.754 0 .716-.435 1.333-1.01 1.614a3.111 3.111 0 0 1 .042.52c0 2.694-3.13 4.87-7.004 4.87-3.874 0-7.004-2.176-7.004-4.87 0-.183.015-.366.043-.534A1.748 1.748 0 0 1 4.028 12c0-.968.786-1.754 1.754-1.754.463 0 .898.196 1.207.49 1.207-.883 2.878-1.43 4.744-1.487l.885-4.182a.342.342 0 0 1 .14-.197.35.35 0 0 1 .238-.042l2.906.617a1.214 1.214 0 0 1 1.108-.702zM9.25 12C8.561 12 8 12.562 8 13.25c0 .687.561 1.248 1.25 1.248.687 0 1.248-.561 1.248-1.249 0-.688-.561-1.249-1.249-1.249zm5.5 0c-.687 0-1.248.561-1.248 1.25 0 .687.561 1.248 1.249 1.248.688 0 1.249-.561 1.249-1.249 0-.688-.562-1.249-1.25-1.249zm-5.466 3.99a.327.327 0 0 0-.231.094.33.33 0 0 0 0 .463c.842.842 2.484.913 2.961.913.477 0 2.105-.056 2.961-.913a.361.361 0 0 0 .029-.463.33.33 0 0 0-.464 0c-.547.533-1.684.73-2.512.73-.828 0-1.979-.196-2.512-.73a.326.326 0 0 0-.232-.095z"/></svg>`
+    };
+
+    // Theme Management Functions
+    function updateThemeBtnUI(theme) {
+      const icon = document.getElementById('themeToggleIcon');
+      const text = document.getElementById('themeToggleText');
+      if (theme === 'dark') {
+        icon.innerHTML = `<svg width="14" height="14" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 3v1m0 16v1m9-9h-1M4 12H3m15.364 6.364l-.707-.707M6.343 6.343l-.707-.707m12.728 0l-.707.707M6.343 17.657l-.707.707M16 12a4 4 0 11-8 0 4 4 0 018 0z"/></svg>`;
+        text.textContent = 'Light';
+      } else {
+        icon.innerHTML = `<svg width="14" height="14" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M20.354 15.354A9 9 0 018.646 3.646 9.003 9.003 0 0012 21a9.003 9.003 0 008.354-5.646z"/></svg>`;
+        text.textContent = 'Dark';
+      }
+    }
+
+    function toggleTheme() {
+      const current = document.documentElement.getAttribute('data-theme') || 'dark';
+      const next = current === 'dark' ? 'light' : 'dark';
+      document.documentElement.setAttribute('data-theme', next);
+      localStorage.setItem('omnipost-theme', next);
+      updateThemeBtnUI(next);
+    }
+
+    // Initialize Theme Button
+    const initialTheme = document.documentElement.getAttribute('data-theme') || 'dark';
+    updateThemeBtnUI(initialTheme);
 
     function openSettingsModal() {
       document.getElementById('settingsModal').classList.remove('hidden');
@@ -584,14 +702,16 @@ ${r.error ? `- **Diagnostics / Error:** ${r.error}` : '- **Diagnostics:** None'}
           ? `<svg width="12" height="12" fill="none" stroke="currentColor" viewBox="0 0 24 24" style="flex-shrink:0;"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M5 13l4 4L19 7"/></svg>`
           : `<svg width="12" height="12" fill="none" stroke="currentColor" viewBox="0 0 24 24" style="flex-shrink:0;"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M6 18L18 6M6 6l12 12"/></svg>`;
 
+        const logoSvg = PLATFORM_LOGOS[r.platform] || '';
+
         return `
           <tr>
-            <td style="font-weight: 700; color: var(--text-main);">${r.platform}</td>
-            <td>
-              <span class="status-pill ${r.status}">
-                ${iconSvg}
-                <span>${isOk ? 'Success' : 'Failed'}</span>
-              </span>
+            <td class="table-platform-cell">
+              ${logoSvg}
+              <span>${r.platform}</span>
+            </td>
+            <td style="white-space: nowrap; width: 115px; min-width: 115px;">
+              <span class="status-pill ${r.status}">${iconSvg}<span>${isOk ? 'Success' : 'Failed'}</span></span>
             </td>
             <td>
               ${r.posted_url
