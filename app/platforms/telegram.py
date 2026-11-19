@@ -10,6 +10,7 @@ import logging
 from app.platforms.base import BasePlatform
 from app.schemas import PlatformResult
 from app.config import get_settings
+from app.store import save_post
 
 logger = logging.getLogger("telegram-platform")
 
@@ -32,7 +33,8 @@ class TelegramPlatform(BasePlatform):
             if settings.ENABLE_SIMULATION_FALLBACK:
                 # Deterministic realistic simulation
                 msg_hash = int(hashlib.md5(f"{message}{time.time()}".encode()).hexdigest()[:6], 16)
-                simulated_url = f"https://t.me/DxoraAnnouncements/{msg_hash}"
+                save_post("telegram", str(msg_hash), message, cta_url)
+                simulated_url = f"http://localhost:{settings.PORT}/view/telegram/{msg_hash}"
                 logger.info("Telegram: Simulated broadcast to %s", simulated_url)
                 return self.make_success(simulated_url)
             return self.make_failed("Authentication failed: TELEGRAM_BOT_TOKEN or TELEGRAM_CHAT_ID not configured.")

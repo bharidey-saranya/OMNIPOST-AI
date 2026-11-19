@@ -9,6 +9,7 @@ import logging
 from app.platforms.base import BasePlatform
 from app.schemas import PlatformResult
 from app.config import get_settings
+from app.store import save_post
 
 logger = logging.getLogger("mastodon-platform")
 
@@ -30,7 +31,8 @@ class MastodonPlatform(BasePlatform):
         if not token:
             if settings.ENABLE_SIMULATION_FALLBACK:
                 status_id = int(time.time() * 1000)
-                simulated_url = f"{instance}/@dxora_official/{status_id}"
+                save_post("mastodon", str(status_id), message, cta_url)
+                simulated_url = f"http://localhost:{settings.PORT}/view/mastodon/{status_id}"
                 logger.info("Mastodon: Simulated broadcast to %s", simulated_url)
                 return self.make_success(simulated_url)
             return self.make_failed("Authentication failed: MASTODON_ACCESS_TOKEN not configured.")

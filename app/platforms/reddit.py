@@ -10,6 +10,7 @@ import logging
 from app.platforms.base import BasePlatform
 from app.schemas import PlatformResult
 from app.config import get_settings
+from app.store import save_post
 
 logger = logging.getLogger("reddit-platform")
 
@@ -34,7 +35,8 @@ class RedditPlatform(BasePlatform):
         if not all([client_id, client_secret, username, password]):
             if settings.ENABLE_SIMULATION_FALLBACK:
                 post_id = hashlib.md5(f"{message}{time.time()}".encode()).hexdigest()[:7]
-                simulated_url = f"https://www.reddit.com/r/{subreddit}/comments/{post_id}/business_announcement/"
+                save_post("reddit", post_id, message, cta_url)
+                simulated_url = f"http://localhost:{settings.PORT}/view/reddit/{post_id}"
                 logger.info("Reddit: Simulated submission to %s", simulated_url)
                 return self.make_success(simulated_url)
             return self.make_failed("Authentication failed: Reddit OAuth2 credentials not configured.")

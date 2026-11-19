@@ -9,6 +9,7 @@ import logging
 from app.platforms.base import BasePlatform
 from app.schemas import PlatformResult
 from app.config import get_settings
+from app.store import save_post
 
 logger = logging.getLogger("slack-platform")
 
@@ -29,7 +30,8 @@ class SlackPlatform(BasePlatform):
         if not webhook_url:
             if settings.ENABLE_SIMULATION_FALLBACK:
                 ts = int(time.time() * 1000000)
-                simulated_url = f"https://dxora-workspace.slack.com/archives/C06TECHNEWS/p{ts}"
+                save_post("slack", str(ts), message, cta_url)
+                simulated_url = f"http://localhost:{settings.PORT}/view/slack/{ts}"
                 logger.info("Slack: Simulated broadcast to %s", simulated_url)
                 return self.make_success(simulated_url)
             return self.make_failed("Authentication failed: SLACK_WEBHOOK_URL not configured.")

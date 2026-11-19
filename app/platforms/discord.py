@@ -10,6 +10,7 @@ import logging
 from app.platforms.base import BasePlatform
 from app.schemas import PlatformResult
 from app.config import get_settings
+from app.store import save_post
 
 logger = logging.getLogger("discord-platform")
 
@@ -30,7 +31,8 @@ class DiscordPlatform(BasePlatform):
         if not webhook_url:
             if settings.ENABLE_SIMULATION_FALLBACK:
                 snowflake = int(hashlib.sha256(f"{message}{time.time()}".encode()).hexdigest()[:14], 16)
-                simulated_url = f"https://discord.com/channels/1122334455/announcements/{snowflake}"
+                save_post("discord", str(snowflake), message, cta_url)
+                simulated_url = f"http://localhost:{settings.PORT}/view/discord/{snowflake}"
                 logger.info("Discord: Simulated broadcast to %s", simulated_url)
                 return self.make_success(simulated_url)
             return self.make_failed("Authentication failed: DISCORD_WEBHOOK_URL not configured.")
