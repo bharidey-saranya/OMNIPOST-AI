@@ -256,7 +256,7 @@
         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z" />
       </svg>
       <div>
-        <strong id="successTitle" style="font-size: 0.95rem;">✓ Broadcast Successful!</strong>
+        <strong id="successTitle" style="font-size: 0.95rem;">Broadcast Successful!</strong>
         <p id="successDetail" style="margin-top: 0.2rem; font-size: 0.8rem; color: #a7f3d0;">Published announcement across all 5 platforms simultaneously.</p>
       </div>
     </div>
@@ -337,6 +337,8 @@
     function showToast(type, message) {
       console.log('Triggering toast:', type, message);
       const container = document.getElementById('toastContainer');
+      container.innerHTML = ''; // Ensure only one toast displays at a time
+
       const toast = document.createElement('div');
       toast.className = `toast toast-${type}`;
       
@@ -344,9 +346,12 @@
         ? `<svg class="toast-icon" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"/></svg>`
         : `<svg class="toast-icon" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"/></svg>`;
 
+      // Strip redundant unicode checkmarks or crosses to prevent duplicate icons
+      const cleanMessage = String(message || '').replace(/^[✓✕✔✖]\s*/, '');
+
       toast.innerHTML = `
         ${icon}
-        <div class="toast-msg">${message}</div>
+        <div class="toast-msg">${cleanMessage}</div>
         <button type="button" class="toast-close" aria-label="Close" onclick="this.parentElement.remove()">
           <svg width="14" height="14" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"/></svg>
         </button>
@@ -498,7 +503,7 @@ ${r.error ? `- **Error Detail:** ${r.error}` : ''}
         updatePreview();
 
         // Trigger floating success toast
-        showToast('success', `✓ Successfully published across all ${data.results.length} platforms!`);
+        showToast('success', `Successfully published across all ${data.results.length} platforms!`);
 
         // Smooth scroll to results
         resultsSection.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
@@ -516,7 +521,7 @@ ${r.error ? `- **Error Detail:** ${r.error}` : ''}
         document.getElementById('errorDetail').textContent = err.message || 'Failed to submit message';
 
         // Trigger floating error toast
-        showToast('error', `✕ ${err.message || 'Failed to submit message'}`);
+        showToast('error', err.message || 'Failed to submit message');
       } finally {
         submitBtn.disabled = false;
         submitBtn.innerHTML = `
