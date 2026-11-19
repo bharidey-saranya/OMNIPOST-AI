@@ -3,342 +3,347 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Automated Multi-Platform Posting Dashboard</title>
-  <link rel="stylesheet" href="/static/style.css?v=2.0">
+  <title>OmniPost AI — Multi-Platform Broadcasting Console</title>
+  <link rel="stylesheet" href="/static/style.css?v=3.0">
   <style>
-    /* Inlined Light Theme Critical Styles to guarantee instant rendering */
-    .toast-container {
-      position: fixed;
-      top: 1.25rem;
-      right: 1.25rem;
-      z-index: 999999;
-      display: flex;
-      flex-direction: column;
-      gap: 0.75rem;
-      pointer-events: none;
-    }
-    .toast {
-      pointer-events: auto;
-      min-width: 320px;
-      max-width: 440px;
-      padding: 0.95rem 1.25rem;
-      border-radius: 10px;
-      font-size: 0.88rem;
-      font-weight: 600;
-      display: flex;
-      align-items: center;
-      gap: 0.75rem;
-      background: #ffffff !important;
-      border: 1px solid #e2e8f0 !important;
-      box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.1), 0 8px 10px -6px rgba(0, 0, 0, 0.05) !important;
-      opacity: 0;
-      transform: translateY(-15px);
-      transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1);
-    }
-    .toast.show {
-      opacity: 1;
-      transform: translateY(0);
-    }
-    .toast.toast-success {
-      border-left: 4px solid #059669 !important;
-      color: #0f172a !important;
-    }
-    .toast.toast-error {
-      border-left: 4px solid #e11d48 !important;
-      color: #0f172a !important;
-    }
-    .toast-icon {
-      width: 20px;
-      height: 20px;
-      flex-shrink: 0;
-    }
-    .toast.toast-success .toast-icon {
-      color: #059669 !important;
-    }
-    .toast.toast-error .toast-icon {
-      color: #e11d48 !important;
-    }
-    .toast-msg {
-      flex: 1;
-      line-height: 1.4;
-      word-break: break-word;
-    }
-    .toast-close {
-      background: transparent;
-      border: none;
-      color: #94a3b8;
-      cursor: pointer;
-      padding: 0.2rem;
-      display: flex;
-      align-items: center;
-    }
-    .toast-close:hover {
-      color: #0f172a;
-    }
-    .success-banner {
-      background: #ecfdf5 !important;
-      border: 1px solid #a7f3d0 !important;
-      color: #065f46 !important;
-      border-radius: 10px;
-      padding: 0.95rem 1.25rem;
-      margin-bottom: 1.25rem;
-      display: flex;
-      align-items: center;
-      gap: 0.85rem;
-    }
-    .loading-box {
-      background: #ffffff !important;
-      border: 1px solid #e2e8f0 !important;
-      border-radius: 14px;
-      padding: 2.5rem 1.5rem;
-      text-align: center;
-      margin-bottom: 2rem;
-      box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.07);
-    }
-    .spinner-wrap {
-      width: 48px;
-      height: 48px;
-      margin: 0 auto 1rem;
-    }
-    .spinner-ring {
-      width: 48px;
-      height: 48px;
-      border: 3.5px solid #eef2ff;
-      border-top-color: #4f46e5;
-      border-radius: 50%;
-      animation: spin 0.8s linear infinite;
-    }
+    /* Inlined Critical Light Theme Overrides */
     .status-pill {
       display: inline-flex !important;
       flex-direction: row !important;
       align-items: center !important;
-      gap: 0.4rem !important;
+      gap: 0.35rem !important;
       white-space: nowrap !important;
-    }
-    @keyframes spin {
-      to { transform: rotate(360deg); }
-    }
-    .hidden {
-      display: none !important;
     }
   </style>
 </head>
 <body>
 
-  <!-- Header -->
-  <header class="app-header">
-    <div class="container header-inner">
-      <div class="brand-badge">
-        <div class="brand-icon">
-          <svg width="20" height="20" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8.684 13.342C8.886 12.938 9 12.482 9 12c0-.482-.114-.938-.316-1.342m0 2.684a3 3 0 110-2.684m0 2.684l6.632 3.316m-6.632-6l6.632-3.316m0 0a3 3 0 105.367-2.684 3 3 0 00-5.367 2.684zm0 9.316a3 3 0 105.368 2.684 3 3 0 00-5.368-2.684z" />
-          </svg>
-        </div>
-        <div style="display: flex; align-items: center;">
-          <span class="brand-title">OmniPost AI</span>
-          <span class="model-pill">5 Platforms Integrated</span>
-        </div>
+  <!-- Top Navigation Bar -->
+  <header class="console-nav">
+    <div class="console-container nav-inner">
+      <div class="nav-brand-group">
+        <a href="/" class="brand-anchor">
+          <div class="brand-symbol">
+            <svg width="16" height="16" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M13 10V3L4 14h7v7l9-11h-7z" />
+            </svg>
+          </div>
+          <span class="brand-name">OmniPost</span>
+        </a>
+        <span class="version-tag">v1.0.0</span>
+        <nav class="nav-links">
+          <button type="button" class="nav-tab active">Broadcaster</button>
+          <a href="/docs" target="_blank" class="nav-tab">
+            <span>Documentation</span>
+            <svg width="12" height="12" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14" />
+            </svg>
+          </a>
+          <a href="https://github.com/bharidey-saranya/automated-posting" target="_blank" class="nav-tab">
+            <span>GitHub</span>
+          </a>
+          <button type="button" onclick="openSettingsModal()" class="nav-tab">
+            <svg width="13" height="13" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10.325 4.317c.426-1.756 2.924-1.756 3.35 0a1.724 1.724 0 002.573 1.066c1.543-.94 3.31.826 2.37 2.37a1.724 1.724 0 001.065 2.572c1.756.426 1.756 2.924 0 3.35a1.724 1.724 0 00-1.066 2.573c.94 1.543-.826 3.31-2.37 2.37a1.724 1.724 0 00-2.572 1.065c-.426 1.756-2.924 1.756-3.35 0a1.724 1.724 0 00-2.573-1.066c-1.543.94-3.31-.826-2.37-2.37a1.724 1.724 0 00-1.065-2.572c-1.756-.426-1.756-2.924 0-3.35a1.724 1.724 0 001.066-2.573c-.94-1.543.826-3.31 2.37-2.37.996.608 2.296.07 2.572-1.065z" />
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z" />
+            </svg>
+            <span>Settings</span>
+          </button>
+        </nav>
       </div>
-      <div class="header-actions">
-        <a href="/docs" target="_blank" class="nav-link">
-          <svg width="14" height="14" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 20l4-16m4 4l4 4-4 4M6 16l-4-4 4-4" />
-          </svg>
-          Swagger Docs
-        </a>
-        <a href="https://github.com/bharidey-saranya/automated-posting" target="_blank" class="nav-link">
-          GitHub Repo
-        </a>
+      <div class="nav-actions">
+        <div class="status-indicator">
+          <span class="status-dot"></span>
+          <span>API Online :4000</span>
+        </div>
       </div>
     </div>
   </header>
 
-  <!-- Main Content -->
-  <main class="container main-content">
+  <!-- Workspace Header Bar -->
+  <section class="workspace-bar">
+    <div class="console-container workspace-inner">
+      <div class="workspace-title-group">
+        <div class="breadcrumb-trail">
+          <span>Broadcaster</span>
+          <span>/</span>
+          <span style="color: var(--text-secondary);">New Multi-Platform Dispatch</span>
+        </div>
+        <h1 class="workspace-heading">Announcement Console</h1>
+        <p class="workspace-description">Publish verified marketing updates and releases with single-link CTA validation across 5 platforms in parallel.</p>
+      </div>
+      <div class="workspace-badges">
+        <span class="version-tag" style="background:#ffffff;">Concurrency: asyncio.gather</span>
+        <span class="version-tag" style="background:#ffffff;">Isolation: Fault-Tolerant</span>
+      </div>
+    </div>
+  </section>
 
-    <!-- Hero -->
-    <section class="hero-section">
-      <h1 class="hero-title">Automated Multi-Platform Broadcasting</h1>
-      <p class="hero-desc">Dispatch marketing announcements across Telegram, Discord, Slack, Mastodon, and Reddit with unified CTA validation and fault-tolerant concurrency.</p>
+  <!-- Main Work Area -->
+  <main class="console-container main-content" style="padding-top: 0;">
+
+    <!-- Connected Platforms Status Strip -->
+    <section class="platforms-strip">
+      <div class="strip-label">
+        <svg width="16" height="16" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 10V3L4 14h7v7l9-11h-7z" />
+        </svg>
+        <span>Connected Networks (5 Active)</span>
+      </div>
+      <div class="connected-chips-row">
+        <div class="platform-chip">
+          <span class="platform-dot tg"></span>
+          <span>Telegram</span>
+          <span class="chip-tag">Public</span>
+        </div>
+        <div class="platform-chip">
+          <span class="platform-dot dc"></span>
+          <span>Discord</span>
+          <span class="chip-tag">Public</span>
+        </div>
+        <div class="platform-chip">
+          <span class="platform-dot sl"></span>
+          <span>Slack</span>
+          <span class="chip-tag">Workspace</span>
+        </div>
+        <div class="platform-chip">
+          <span class="platform-dot ms"></span>
+          <span>Mastodon</span>
+          <span class="chip-tag">Public</span>
+        </div>
+        <div class="platform-chip">
+          <span class="platform-dot rd"></span>
+          <span>Reddit</span>
+          <span class="chip-tag">Public</span>
+        </div>
+      </div>
     </section>
 
-    <!-- Platform Showcase Grid -->
-    <div class="platforms-grid">
-      <div class="platform-pill-card">
-        <div class="platform-icon-circle" style="background: #229ED9;">TG</div>
-        <div>
-          <div class="platform-info-name">Telegram</div>
-          <div class="platform-info-sub">Public Channel Broadcast</div>
-        </div>
-      </div>
-      <div class="platform-pill-card">
-        <div class="platform-icon-circle" style="background: #5865F2;">DC</div>
-        <div>
-          <div class="platform-info-name">Discord</div>
-          <div class="platform-info-sub">Community Webhook</div>
-        </div>
-      </div>
-      <div class="platform-pill-card">
-        <div class="platform-icon-circle" style="background: #E01E5A;">SL</div>
-        <div>
-          <div class="platform-info-name">Slack</div>
-          <div class="platform-info-sub">Workspace Incoming Hook</div>
-        </div>
-      </div>
-      <div class="platform-pill-card">
-        <div class="platform-icon-circle" style="background: #6364FF;">MS</div>
-        <div>
-          <div class="platform-info-name">Mastodon</div>
-          <div class="platform-info-sub">Decentralized Fediverse</div>
-        </div>
-      </div>
-      <div class="platform-pill-card">
-        <div class="platform-icon-circle" style="background: #FF4500;">RD</div>
-        <div>
-          <div class="platform-info-name">Reddit</div>
-          <div class="platform-info-sub">Subreddit Link Submission</div>
-        </div>
-      </div>
-    </div>
-
-    <!-- Message Input Form -->
-    <div class="form-card">
-      <form id="postingForm">
-        <div class="textarea-wrap">
-          <textarea
-            id="messageInput"
-            required
-            rows="3"
-            class="message-input"
-            placeholder="Type your message with exactly 1 CTA link (max 200 chars)..."
-          >Check out our latest business platform and grow your online visibility. https://example.com</textarea>
-        </div>
-
-        <div class="input-footer">
-          <div>
-            <span>Characters: </span>
-            <span id="charCount" class="counter-badge valid">91 / 200</span>
-          </div>
-          <div id="ctaContainer" class="cta-preview">
-            <span>CTA Link: </span>
-            <span id="ctaBadge" class="cta-pill">https://example.com</span>
-          </div>
-        </div>
-
-        <button type="submit" id="submitBtn" class="submit-btn">
-          <svg width="18" height="18" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 19l9 2-9-18-9 18 9-2zm0 0v-8" />
+    <!-- Announcement Composer (Primary Focus) -->
+    <section class="composer-card">
+      <div class="composer-header">
+        <div class="composer-header-title">
+          <svg width="16" height="16" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z" />
           </svg>
-          <span>Publish to All 5 Platforms</span>
-        </button>
-      </form>
-
-      <!-- Quick sample pills -->
-      <div class="sample-bar">
-        <span>Try sample messages:</span>
-        <button type="button" onclick="setSample('Check out our latest business platform and grow your online visibility. https://example.com')" class="sample-pill">Official Test Prompt</button>
-        <button type="button" onclick="setSample('Excited to announce our new developer API! Start shipping today at https://stripe.com')" class="sample-pill">Developer Product</button>
-        <button type="button" onclick="setSample('Streamline your engineering sprints with modern velocity tools https://linear.app')" class="sample-pill">SaaS Tool</button>
-        <button type="button" onclick="setSample('Discover the latest AI automation insights https://dxora.com/blog')" class="sample-pill">Blog Article</button>
+          <span>Compose Announcement</span>
+        </div>
+        <span class="composer-rules-badge">Max 200 Chars • Exactly 1 CTA Link Required</span>
       </div>
-    </div>
+
+      <div class="composer-body">
+        <form id="postingForm">
+          <div class="textarea-container">
+            <textarea
+              id="messageInput"
+              required
+              rows="3"
+              class="composer-textarea"
+              placeholder="Enter announcement text with exactly one CTA link (e.g. Check out our latest platform release https://example.com)..."
+            >Check out our latest business platform and grow your online visibility. https://example.com</textarea>
+          </div>
+
+          <!-- Metadata Indicators -->
+          <div class="composer-meta-bar">
+            <div class="cta-detector" id="ctaContainer">
+              <span style="font-weight: 600;">Detected CTA Link:</span>
+              <span id="ctaBadge" class="cta-chip">https://example.com</span>
+            </div>
+            <div style="display: flex; align-items: center; gap: 0.5rem;">
+              <span style="color: var(--text-muted); font-size: 0.78rem;">Character Budget:</span>
+              <span id="charCount" class="char-counter valid">91 / 200</span>
+            </div>
+          </div>
+
+          <!-- Target Destinations & Action Row -->
+          <div class="target-selection-row">
+            <div class="target-platforms-tags">
+              <span style="font-size: 0.75rem; font-weight: 600; color: var(--text-muted); margin-right: 0.25rem;">Destinations:</span>
+              <span class="target-tag">✓ Telegram Channel</span>
+              <span class="target-tag">✓ Discord Webhook</span>
+              <span class="target-tag">✓ Slack Incoming</span>
+              <span class="target-tag">✓ Mastodon Fediverse</span>
+              <span class="target-tag">✓ Reddit Community</span>
+            </div>
+            <div class="composer-actions">
+              <button type="button" onclick="clearComposer()" class="btn-ghost">Reset</button>
+              <button type="submit" id="submitBtn" class="btn-primary-action">
+                <svg width="15" height="15" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 19l9 2-9-18-9 18 9-2zm0 0v-8" />
+                </svg>
+                <span>Dispatch to All 5 Platforms</span>
+              </button>
+            </div>
+          </div>
+        </form>
+
+        <!-- Sample Announcement Templates -->
+        <div class="template-strip">
+          <span class="template-label">Pre-built Templates:</span>
+          <button type="button" onclick="setSample('Check out our latest business platform and grow your online visibility. https://example.com')" class="template-btn">Official Test Prompt</button>
+          <button type="button" onclick="setSample('Excited to announce our new developer API! Start shipping today at https://stripe.com')" class="template-btn">API Launch</button>
+          <button type="button" onclick="setSample('Streamline your engineering sprints with modern velocity tools https://linear.app')" class="template-btn">Product Release</button>
+          <button type="button" onclick="setSample('Discover the latest AI automation insights https://dxora.com/blog')" class="template-btn">Blog Post</button>
+        </div>
+      </div>
+    </section>
 
     <!-- Error Banner -->
-    <div id="errorBanner" class="error-banner hidden">
-      <svg width="20" height="20" fill="none" stroke="currentColor" viewBox="0 0 24 24" style="flex-shrink: 0; margin-top: 2px;">
+    <div id="errorBanner" class="inpage-banner error hidden">
+      <svg class="banner-icon" fill="none" stroke="currentColor" viewBox="0 0 24 24">
         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4m0 4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
       </svg>
-      <div>
-        <strong id="errorTitle">Input Validation Error</strong>
-        <p id="errorDetail" style="margin-top: 0.2rem;"></p>
+      <div class="banner-content">
+        <div class="banner-title" id="errorTitle">Input Validation Failed</div>
+        <div class="banner-desc" id="errorDetail"></div>
       </div>
     </div>
 
-    <!-- Loading Box -->
-    <div id="loadingState" class="loading-box hidden">
-      <div class="spinner-wrap">
-        <div class="spinner-ring"></div>
-      </div>
-      <h3 style="font-size: 1.05rem; font-weight: 700; color: #fff;">Broadcasting Message</h3>
-      <p style="font-size: 0.8rem; color: var(--text-muted); margin-top: 0.25rem;">Dispatching concurrent API requests to Telegram, Discord, Slack, Mastodon & Reddit...</p>
+    <!-- Loading State Card -->
+    <div id="loadingState" class="loading-state-card hidden">
+      <div class="pulse-spinner"></div>
+      <h3 style="font-size: 0.95rem; font-weight: 700; color: var(--text-main);">Dispatching Announcements</h3>
+      <p style="font-size: 0.8rem; color: var(--text-muted); margin-top: 0.2rem;">Calling Telegram, Discord, Slack, Mastodon, and Reddit APIs in parallel...</p>
     </div>
 
-    <!-- Success In-Page Banner -->
-    <div id="successBanner" class="success-banner hidden">
-      <svg width="22" height="22" fill="none" stroke="currentColor" viewBox="0 0 24 24" style="flex-shrink: 0;">
+    <!-- In-Page Success Banner -->
+    <div id="successBanner" class="inpage-banner success hidden">
+      <svg class="banner-icon" fill="none" stroke="currentColor" viewBox="0 0 24 24">
         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z" />
       </svg>
-      <div>
-        <strong id="successTitle" style="font-size: 0.95rem;">Broadcast Successful!</strong>
-        <p id="successDetail" style="margin-top: 0.2rem; font-size: 0.8rem; color: #a7f3d0;">Published announcement across all 5 platforms simultaneously.</p>
+      <div class="banner-content">
+        <div class="banner-title" id="successTitle">Broadcast Successful</div>
+        <div class="banner-desc" id="successDetail">Published announcement across all 5 platforms simultaneously.</div>
       </div>
     </div>
 
-    <!-- Results Section -->
-    <section id="resultsSection" class="results-wrapper hidden">
-      <div class="results-header">
-        <div>
-          <h2 style="font-size: 1.15rem; font-weight: 700; color: #fff;">Multi-Platform Broadcasting Results</h2>
-          <p style="font-size: 0.78rem; color: var(--text-muted); margin-top: 0.2rem;">All 5 platform drivers executed concurrently with independent failure isolation.</p>
+    <!-- Execution Results Section (SaaS Data Table) -->
+    <section id="resultsSection" class="results-card hidden">
+      <div class="results-toolbar">
+        <div class="results-title-group">
+          <span class="results-title">Broadcast Execution Log</span>
+          <div class="stats-counter-group">
+            <span class="counter-chip success">
+              <span id="successCount">5</span> Successful
+            </span>
+            <span class="counter-chip danger">
+              <span id="failedCount">0</span> Failed
+            </span>
+          </div>
         </div>
-        <div class="results-stats">
-          <div class="stat-item">
-            <span>Successful:</span>
-            <span id="successCount" class="stat-badge success">5</span>
-          </div>
-          <div class="stat-item">
-            <span>Failed:</span>
-            <span id="failedCount" class="stat-badge failed">0</span>
-          </div>
-          <button onclick="downloadReport()" class="btn-secondary">
-            <svg width="14" height="14" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+        <div class="results-action-buttons">
+          <button type="button" onclick="downloadReport()" class="btn-outline-sm">
+            <svg width="13" height="13" fill="none" stroke="currentColor" viewBox="0 0 24 24">
               <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-4l-4 4m0 0l-4-4m4 4V4"/>
             </svg>
-            <span>Download Report (.md)</span>
+            <span>Export Report (.md)</span>
           </button>
-          <button onclick="copyJson()" class="btn-secondary">
-            <svg width="14" height="14" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+          <button type="button" onclick="copyJson()" class="btn-outline-sm">
+            <svg width="13" height="13" fill="none" stroke="currentColor" viewBox="0 0 24 24">
               <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 16H6a2 2 0 01-2-2V6a2 2 0 012-2h8a2 2 0 012 2v2m-6 12h8a2 2 0 002-2v-8a2 2 0 00-2-2h-8a2 2 0 00-2 2v8a2 2 0 002 2z"/>
             </svg>
-            <span id="copyBtnText">Copy JSON</span>
+            <span id="copyBtnText">Copy Raw JSON</span>
           </button>
         </div>
       </div>
 
-      <!-- Results Table -->
-      <div class="table-wrap">
-        <table class="results-table">
+      <!-- SaaS Data Table -->
+      <div class="table-responsive-wrapper">
+        <table class="saas-table">
           <thead>
             <tr>
               <th>Platform</th>
               <th>Status</th>
               <th>Published URL</th>
-              <th>Access</th>
-              <th>Date</th>
-              <th>Time (UTC)</th>
-              <th>Error</th>
+              <th>Access Level</th>
+              <th>Date & Time (UTC)</th>
+              <th>Diagnostics</th>
             </tr>
           </thead>
           <tbody id="resultsTableBody"></tbody>
         </table>
       </div>
 
-      <!-- Raw JSON Details -->
-      <div>
-        <h4 style="font-size: 0.85rem; font-weight: 600; color: #fff; margin-bottom: 0.5rem;">Raw Response Payload</h4>
-        <pre id="rawJsonViewer" class="code-viewer"></pre>
+      <!-- Raw JSON View Drawer -->
+      <div class="json-viewer-header">
+        <span class="json-viewer-title">Standardized API Response Payload</span>
+        <span style="font-size: 0.72rem; color: var(--text-faint); font-family: var(--font-mono);">POST /posting → 200 OK</span>
       </div>
+      <pre id="rawJsonViewer" class="console-code-block"></pre>
     </section>
 
   </main>
 
-  <!-- Footer -->
-  <footer class="app-footer">
-    <p>Automated Multi-Platform Posting System • Built with FastAPI, Pydantic & HTTPX</p>
-  </footer>
+  <!-- Settings Modal Dialog -->
+  <div id="settingsModal" class="modal-overlay hidden" onclick="closeSettingsOnBackdrop(event)">
+    <div class="modal-dialog">
+      <div class="modal-header">
+        <h3 class="modal-title">Platform Integration Settings</h3>
+        <button type="button" onclick="closeSettingsModal()" class="modal-close-btn" aria-label="Close">
+          <svg width="16" height="16" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"/>
+          </svg>
+        </button>
+      </div>
+      <div class="modal-body">
+        <p style="font-size: 0.8rem; color: var(--text-muted); margin-bottom: 1rem;">
+          OmniPost connects to 5 third-party APIs with independent failure isolation. If live credentials are not set in <code>.env</code>, simulation fallback mode is activated automatically.
+        </p>
+        <div class="settings-grid">
+          <div class="settings-item">
+            <div>
+              <div class="settings-key">Telegram Bot API</div>
+              <div style="font-size: 0.72rem; color: var(--text-muted);">POST /bot&lt;token&gt;/sendMessage</div>
+            </div>
+            <span class="settings-val sim">Simulation Fallback Active</span>
+          </div>
+          <div class="settings-item">
+            <div>
+              <div class="settings-key">Discord Webhook API</div>
+              <div style="font-size: 0.72rem; color: var(--text-muted);">POST /api/webhooks/...?wait=true</div>
+            </div>
+            <span class="settings-val sim">Simulation Fallback Active</span>
+          </div>
+          <div class="settings-item">
+            <div>
+              <div class="settings-key">Slack Incoming Webhook</div>
+              <div style="font-size: 0.72rem; color: var(--text-muted);">POST https://hooks.slack.com/...</div>
+            </div>
+            <span class="settings-val sim">Simulation Fallback Active</span>
+          </div>
+          <div class="settings-item">
+            <div>
+              <div class="settings-key">Mastodon REST API v1</div>
+              <div style="font-size: 0.72rem; color: var(--text-muted);">POST /api/v1/statuses</div>
+            </div>
+            <span class="settings-val sim">Simulation Fallback Active</span>
+          </div>
+          <div class="settings-item">
+            <div>
+              <div class="settings-key">Reddit OAuth2 API</div>
+              <div style="font-size: 0.72rem; color: var(--text-muted);">POST /api/submit</div>
+            </div>
+            <span class="settings-val sim">Simulation Fallback Active</span>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
 
   <!-- Toast Notification Container -->
   <div id="toastContainer" class="toast-container"></div>
+
+  <!-- Footer -->
+  <footer class="console-footer">
+    <div class="console-container footer-inner">
+      <span>OmniPost AI • Production-grade Multi-Platform Broadcasting Service</span>
+      <div class="footer-links">
+        <a href="/docs" target="_blank" class="footer-link">Swagger OpenAPI</a>
+        <a href="/health" target="_blank" class="footer-link">Health Check</a>
+        <a href="/platforms" target="_blank" class="footer-link">Platforms API</a>
+      </div>
+    </div>
+  </footer>
 
   <script>
     let currentResponseData = null;
@@ -347,19 +352,32 @@
     const charCount = document.getElementById('charCount');
     const ctaBadge = document.getElementById('ctaBadge');
 
+    function openSettingsModal() {
+      document.getElementById('settingsModal').classList.remove('hidden');
+    }
+
+    function closeSettingsModal() {
+      document.getElementById('settingsModal').classList.add('hidden');
+    }
+
+    function closeSettingsOnBackdrop(e) {
+      if (e.target.id === 'settingsModal') {
+        closeSettingsModal();
+      }
+    }
+
     function showToast(type, message) {
-      console.log('Triggering toast:', type, message);
       const container = document.getElementById('toastContainer');
-      container.innerHTML = ''; // Ensure only one toast displays at a time
+      container.innerHTML = ''; // Single toast enforcement
 
       const toast = document.createElement('div');
       toast.className = `toast toast-${type}`;
       
       const icon = type === 'success'
-        ? `<svg class="toast-icon" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"/></svg>`
-        : `<svg class="toast-icon" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"/></svg>`;
+        ? `<svg class="toast-icon" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M5 13l4 4L19 7"/></svg>`
+        : `<svg class="toast-icon" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M6 18L18 6M6 6l12 12"/></svg>`;
 
-      // Strip redundant unicode checkmarks or crosses to prevent duplicate icons
+      // Strip redundant checkmarks / crosses from the message text
       const cleanMessage = String(message || '').replace(/^[✓✕✔✖]\s*/, '');
 
       toast.innerHTML = `
@@ -371,14 +389,13 @@
       `;
 
       container.appendChild(toast);
-      // Force layout reflow then show
       void toast.offsetWidth;
       toast.classList.add('show');
 
       setTimeout(() => {
         toast.classList.remove('show');
-        setTimeout(() => toast.remove(), 400);
-      }, 4500);
+        setTimeout(() => toast.remove(), 350);
+      }, 4200);
     }
 
     function updatePreview() {
@@ -387,16 +404,16 @@
       charCount.textContent = `${len} / 200`;
 
       if (len > 200) {
-        charCount.className = 'counter-badge invalid';
+        charCount.className = 'char-counter invalid';
       } else {
-        charCount.className = 'counter-badge valid';
+        charCount.className = 'char-counter valid';
       }
 
-      // Neutral state when input is completely empty (after submit or reset)
+      // Neutral state when input is empty
       if (!text.trim()) {
-        ctaBadge.textContent = 'Enter a message with 1 CTA link';
-        ctaBadge.style.color = '#9ca3af';
-        ctaBadge.style.borderColor = '#374151';
+        ctaBadge.textContent = 'Enter message with 1 CTA URL';
+        ctaBadge.style.color = 'var(--text-muted)';
+        ctaBadge.style.borderColor = 'var(--border-default)';
         return;
       }
 
@@ -406,16 +423,16 @@
 
       if (matches.length === 1) {
         ctaBadge.textContent = matches[0].replace(/[.,;!?)"']+$/, '');
-        ctaBadge.style.color = '#34d399';
-        ctaBadge.style.borderColor = 'rgba(16, 185, 129, 0.3)';
+        ctaBadge.style.color = 'var(--success)';
+        ctaBadge.style.borderColor = 'var(--success-border)';
       } else if (matches.length === 0) {
         ctaBadge.textContent = 'No CTA link detected (Required)';
-        ctaBadge.style.color = '#f87171';
-        ctaBadge.style.borderColor = 'rgba(239, 68, 68, 0.3)';
+        ctaBadge.style.color = 'var(--danger)';
+        ctaBadge.style.borderColor = 'var(--danger-border)';
       } else {
         ctaBadge.textContent = `${matches.length} CTA links detected (Max 1 allowed)`;
-        ctaBadge.style.color = '#f87171';
-        ctaBadge.style.borderColor = 'rgba(239, 68, 68, 0.3)';
+        ctaBadge.style.color = 'var(--danger)';
+        ctaBadge.style.borderColor = 'var(--danger-border)';
       }
     }
 
@@ -425,14 +442,21 @@
     function setSample(msg) {
       messageInput.value = msg;
       updatePreview();
+      messageInput.focus();
+    }
+
+    function clearComposer() {
+      messageInput.value = '';
+      updatePreview();
+      messageInput.focus();
     }
 
     function copyJson() {
       if (!currentResponseData) return;
       navigator.clipboard.writeText(JSON.stringify(currentResponseData, null, 2));
       const btn = document.getElementById('copyBtnText');
-      btn.textContent = 'Copied!';
-      setTimeout(() => { btn.textContent = 'Copy JSON'; }, 2000);
+      btn.textContent = 'Copied to Clipboard!';
+      setTimeout(() => { btn.textContent = 'Copy Raw JSON'; }, 2000);
     }
 
     function downloadReport() {
@@ -440,8 +464,8 @@
       const res = currentResponseData.results || [];
       const msg = lastSubmittedMessage || 'Announcement';
       const md = `# Multi-Platform Broadcast Report
-**Submitted Message:** ${msg}  
-**Date:** ${new Date().toISOString()}  
+**Dispatched Message:** ${msg}  
+**Execution Timestamp:** ${new Date().toISOString()}  
 
 ---
 
@@ -449,15 +473,15 @@
 ${res.map(r => `
 ### ${r.platform} - Status: ${r.status.toUpperCase()}
 - **Published URL:** ${r.posted_url || 'N/A'}
-- **Public Access:** ${r.public_access ? 'Yes (Public)' : 'No (Workspace Protected)'}
-- **Date & Time:** ${r.date || 'N/A'} ${r.time || ''}
-${r.error ? `- **Error Detail:** ${r.error}` : ''}
+- **Access Level:** ${r.public_access ? 'Public Access' : 'Workspace Protected'}
+- **Date & Time (UTC):** ${r.date || 'N/A'} ${r.time || ''}
+${r.error ? `- **Diagnostics / Error:** ${r.error}` : '- **Diagnostics:** None'}
 `).join('\n')}
 `;
       const blob = new Blob([md], { type: 'text/markdown;charset=utf-8;' });
       const link = document.createElement('a');
       link.href = URL.createObjectURL(blob);
-      link.download = `posting-report-${Date.now()}.md`;
+      link.download = `omnipost-broadcast-${Date.now()}.md`;
       link.click();
     }
 
@@ -472,7 +496,7 @@ ${r.error ? `- **Error Detail:** ${r.error}` : ''}
 
       submitBtn.disabled = true;
       submitBtn.innerHTML = `
-        <div style="width: 16px; height: 16px; border: 2px solid rgba(255,255,255,0.3); border-top-color: #fff; border-radius: 50%; animation: spin 0.7s linear infinite;"></div>
+        <div style="width: 14px; height: 14px; border: 2px solid rgba(255,255,255,0.3); border-top-color: #fff; border-radius: 50%; animation: spin 0.7s linear infinite;"></div>
         <span>Broadcasting across 5 platforms...</span>
       `;
 
@@ -492,7 +516,7 @@ ${r.error ? `- **Error Detail:** ${r.error}` : ''}
 
         const data = await res.json();
 
-        // Ensure user visibly sees the loading animation smoothly for at least 700ms
+        // 700ms minimum display to ensure clean visual transition
         const elapsed = Date.now() - startTime;
         if (elapsed < 700) {
           await new Promise(resolve => setTimeout(resolve, 700 - elapsed));
@@ -516,16 +540,15 @@ ${r.error ? `- **Error Detail:** ${r.error}` : ''}
         updatePreview();
 
         // Trigger floating success toast
-        showToast('success', `Successfully published across all ${data.results.length} platforms!`);
+        showToast('success', `Broadcast dispatched successfully across all ${data.results.length} platforms!`);
 
         // Smooth scroll to results
         resultsSection.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
 
       } catch (err) {
-        // Ensure user sees loading for smooth feedback
         const elapsed = Date.now() - startTime;
-        if (elapsed < 400) {
-          await new Promise(resolve => setTimeout(resolve, 400 - elapsed));
+        if (elapsed < 350) {
+          await new Promise(resolve => setTimeout(resolve, 350 - elapsed));
         }
 
         loadingState.classList.add('hidden');
@@ -538,10 +561,10 @@ ${r.error ? `- **Error Detail:** ${r.error}` : ''}
       } finally {
         submitBtn.disabled = false;
         submitBtn.innerHTML = `
-          <svg width="18" height="18" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+          <svg width="15" height="15" fill="none" stroke="currentColor" viewBox="0 0 24 24">
             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 19l9 2-9-18-9 18 9-2zm0 0v-8" />
           </svg>
-          <span>Publish to All 5 Platforms</span>
+          <span>Dispatch to All 5 Platforms</span>
         `;
       }
     });
@@ -558,12 +581,12 @@ ${r.error ? `- **Error Detail:** ${r.error}` : ''}
       tbody.innerHTML = results.map(r => {
         const isOk = r.status === 'success';
         const iconSvg = isOk
-          ? `<svg width="13" height="13" fill="none" stroke="currentColor" viewBox="0 0 24 24" style="flex-shrink:0;"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M5 13l4 4L19 7"/></svg>`
-          : `<svg width="13" height="13" fill="none" stroke="currentColor" viewBox="0 0 24 24" style="flex-shrink:0;"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M6 18L18 6M6 6l12 12"/></svg>`;
+          ? `<svg width="12" height="12" fill="none" stroke="currentColor" viewBox="0 0 24 24" style="flex-shrink:0;"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M5 13l4 4L19 7"/></svg>`
+          : `<svg width="12" height="12" fill="none" stroke="currentColor" viewBox="0 0 24 24" style="flex-shrink:0;"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M6 18L18 6M6 6l12 12"/></svg>`;
 
         return `
           <tr>
-            <td style="font-weight: 700;">${r.platform}</td>
+            <td style="font-weight: 700; color: var(--text-main);">${r.platform}</td>
             <td>
               <span class="status-pill ${r.status}">
                 ${iconSvg}
@@ -572,21 +595,25 @@ ${r.error ? `- **Error Detail:** ${r.error}` : ''}
             </td>
             <td>
               ${r.posted_url
-                ? `<a href="${r.posted_url}" target="_blank" class="post-link">${r.posted_url}</a>`
-                : '<span style="color: var(--text-faint);">None</span>'
+                ? `<a href="${r.posted_url}" target="_blank" class="table-post-link">
+                    <span>${r.posted_url}</span>
+                    <svg width="11" height="11" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14"/></svg>
+                  </a>`
+                : '<span style="color: var(--text-faint); font-family: var(--font-mono); font-size: 0.78rem;">None</span>'
               }
             </td>
             <td>
               <span class="access-pill ${r.public_access ? 'public' : 'private'}">
-                ${r.public_access ? 'Public' : 'Protected'}
+                ${r.public_access ? 'Public' : 'Workspace'}
               </span>
             </td>
-            <td style="color: var(--text-secondary);">${r.date || '—'}</td>
-            <td style="color: var(--text-secondary);">${r.time || '—'}</td>
+            <td>
+              <span class="table-timestamp">${r.date || '—'} ${r.time ? r.time + ' UTC' : ''}</span>
+            </td>
             <td>
               ${r.error
-                ? `<span style="color: var(--accent-danger); font-size: 0.78rem; font-weight: 500;">${r.error}</span>`
-                : '<span style="color: var(--accent-success); font-weight: 600;">None</span>'
+                ? `<span style="color: var(--danger); font-size: 0.78rem; font-weight: 600;">${r.error}</span>`
+                : '<span style="color: var(--success); font-weight: 600; font-size: 0.78rem;">—</span>'
               }
             </td>
           </tr>
