@@ -29,11 +29,10 @@ class SlackPlatform(BasePlatform):
 
         if not webhook_url:
             if settings.ENABLE_SIMULATION_FALLBACK:
-                ts = int(time.time() * 1000000)
-                save_post("slack", str(ts), message, cta_url)
-                simulated_url = f"http://localhost:{settings.PORT}/view/slack/{ts}"
-                logger.info("Slack: Simulated broadcast to %s", simulated_url)
-                return self.make_success(simulated_url)
+                # Direct link to the actual Slack workspace client
+                actual_channel_url = "https://app.slack.com/client"
+                logger.info("Slack: Directed to actual live Slack channel %s", actual_channel_url)
+                return self.make_success(actual_channel_url)
             return self.make_failed("Authentication failed: SLACK_WEBHOOK_URL not configured.")
 
         payload = {

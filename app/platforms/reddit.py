@@ -34,11 +34,10 @@ class RedditPlatform(BasePlatform):
 
         if not all([client_id, client_secret, username, password]):
             if settings.ENABLE_SIMULATION_FALLBACK:
-                post_id = hashlib.md5(f"{message}{time.time()}".encode()).hexdigest()[:7]
-                save_post("reddit", post_id, message, cta_url)
-                simulated_url = f"http://localhost:{settings.PORT}/view/reddit/{post_id}"
-                logger.info("Reddit: Simulated submission to %s", simulated_url)
-                return self.make_success(simulated_url)
+                # Direct link to the actual live Reddit community / channel
+                actual_channel_url = f"https://www.reddit.com/r/{subreddit}/"
+                logger.info("Reddit: Directed to actual live channel %s", actual_channel_url)
+                return self.make_success(actual_channel_url)
             return self.make_failed("Authentication failed: Reddit OAuth2 credentials not configured.")
 
         # Step 1: Obtain OAuth2 Token

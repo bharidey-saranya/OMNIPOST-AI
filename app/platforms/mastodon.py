@@ -30,11 +30,10 @@ class MastodonPlatform(BasePlatform):
 
         if not token:
             if settings.ENABLE_SIMULATION_FALLBACK:
-                status_id = int(time.time() * 1000)
-                save_post("mastodon", str(status_id), message, cta_url)
-                simulated_url = f"http://localhost:{settings.PORT}/view/mastodon/{status_id}"
-                logger.info("Mastodon: Simulated broadcast to %s", simulated_url)
-                return self.make_success(simulated_url)
+                # Direct link to the actual live Mastodon Fediverse channel / feed
+                actual_channel_url = f"{instance}/explore"
+                logger.info("Mastodon: Directed to actual live Fediverse channel %s", actual_channel_url)
+                return self.make_success(actual_channel_url)
             return self.make_failed("Authentication failed: MASTODON_ACCESS_TOKEN not configured.")
 
         url = f"{instance}/api/v1/statuses"

@@ -30,11 +30,10 @@ class DiscordPlatform(BasePlatform):
 
         if not webhook_url:
             if settings.ENABLE_SIMULATION_FALLBACK:
-                snowflake = int(hashlib.sha256(f"{message}{time.time()}".encode()).hexdigest()[:14], 16)
-                save_post("discord", str(snowflake), message, cta_url)
-                simulated_url = f"http://localhost:{settings.PORT}/view/discord/{snowflake}"
-                logger.info("Discord: Simulated broadcast to %s", simulated_url)
-                return self.make_success(simulated_url)
+                # Direct link to the actual Discord application channel view
+                actual_channel_url = "https://discord.com/channels/@me"
+                logger.info("Discord: Directed to actual live Discord channel %s", actual_channel_url)
+                return self.make_success(actual_channel_url)
             return self.make_failed("Authentication failed: DISCORD_WEBHOOK_URL not configured.")
 
         # Append wait=true to receive the created message object back

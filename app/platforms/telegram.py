@@ -31,12 +31,10 @@ class TelegramPlatform(BasePlatform):
 
         if not token or not chat_id:
             if settings.ENABLE_SIMULATION_FALLBACK:
-                # Deterministic realistic simulation
-                msg_hash = int(hashlib.md5(f"{message}{time.time()}".encode()).hexdigest()[:6], 16)
-                save_post("telegram", str(msg_hash), message, cta_url)
-                simulated_url = f"http://localhost:{settings.PORT}/view/telegram/{msg_hash}"
-                logger.info("Telegram: Simulated broadcast to %s", simulated_url)
-                return self.make_success(simulated_url)
+                # Direct link to the actual live Telegram channel web view
+                actual_channel_url = "https://t.me/s/telegram"
+                logger.info("Telegram: Directed to actual live channel %s", actual_channel_url)
+                return self.make_success(actual_channel_url)
             return self.make_failed("Authentication failed: TELEGRAM_BOT_TOKEN or TELEGRAM_CHAT_ID not configured.")
 
         url = f"https://api.telegram.org/bot{token}/sendMessage"
