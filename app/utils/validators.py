@@ -9,9 +9,9 @@ from urllib.parse import urlparse
 import ipaddress
 import socket
 
-# Regex matching standard HTTP/HTTPS URLs
+# Regex matching standard HTTP/HTTPS or www URLs
 URL_REGEX = re.compile(
-    r"(?:https?:\/\/)"                          # scheme
+    r"(?:https?:\/\/|www\.)"                    # scheme or www prefix
     r"(?:[a-zA-Z0-9_\-\.]+\.[a-zA-Z]{2,}|localhost|\d{1,3}\.\d{1,3}\.\d{1,3}\.\d{1,3})"  # domain or ip
     r"(?::\d+)?"                                # optional port
     r"(?:\/[^\s]*)?",                           # optional path
@@ -29,6 +29,9 @@ def extract_urls(text: str) -> List[str]:
     for match in raw_matches:
         trimmed = match.rstrip(".,;!?)\"'")
         if trimmed:
+            # Normalize naked www. to https://
+            if trimmed.lower().startswith("www."):
+                trimmed = "https://" + trimmed
             cleaned.append(trimmed)
     return cleaned
 

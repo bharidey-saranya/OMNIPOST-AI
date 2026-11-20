@@ -156,9 +156,9 @@
           <span id="themeToggleText">Theme</span>
         </button>
 
-        <div class="status-indicator">
-          <span class="status-dot"></span>
-          <span>API Online :4000</span>
+        <div class="status-indicator" id="navStatusIndicator">
+          <span class="status-dot" id="navStatusDot"></span>
+          <span id="navStatusText">API Online :4000</span>
         </div>
       </div>
     </div>
@@ -595,12 +595,14 @@
         return;
       }
 
-      // Regex matching URLs
-      const urlRegex = /(?:https?:\/\/)(?:[a-zA-Z0-9_\-\.]+\.[a-zA-Z]{2,}|localhost|\d{1,3}\.\d{1,3}\.\d{1,3}\.\d{1,3})(?::\d+)?(?:\/[^\s]*)?/gi;
+      // Regex matching URLs (http, https, www)
+      const urlRegex = /(?:https?:\/\/|www\.)(?:[a-zA-Z0-9_\-\.]+\.[a-zA-Z]{2,}|localhost|\d{1,3}\.\d{1,3}\.\d{1,3}\.\d{1,3})(?::\d+)?(?:\/[^\s]*)?/gi;
       const matches = text.match(urlRegex) || [];
 
       if (matches.length === 1) {
-        ctaBadge.textContent = matches[0].replace(/[.,;!?)"']+$/, '');
+        let cleanUrl = matches[0].replace(/[.,;!?)"']+$/, '');
+        if (cleanUrl.toLowerCase().startsWith('www.')) cleanUrl = 'https://' + cleanUrl;
+        ctaBadge.textContent = cleanUrl;
         ctaBadge.style.color = 'var(--success)';
         ctaBadge.style.borderColor = 'var(--success-border)';
       } else if (matches.length === 0) {
@@ -701,7 +703,10 @@ ${r.error ? `- **Diagnostics / Error:** ${r.error}` : '- **Diagnostics:** None'}
         }
 
         if (!res.ok) {
-          throw new Error(data.detail || data.error || 'Server validation error');
+          const errMsg = Array.isArray(data.detail)
+            ? data.detail.map(d => d.msg || JSON.stringify(d)).join(', ')
+            : (data.detail || data.error || 'Server validation error');
+          throw new Error(errMsg);
         }
 
         lastSubmittedMessage = message;
@@ -731,11 +736,18 @@ ${r.error ? `- **Diagnostics / Error:** ${r.error}` : '- **Diagnostics:** None'}
 
         loadingState.classList.add('hidden');
         errorBanner.classList.remove('hidden');
-        document.getElementById('errorTitle').textContent = 'Validation / Request Error';
-        document.getElementById('errorDetail').textContent = err.message || 'Failed to submit message';
+
+        const isOffline = !err.message || err.message.includes('Failed to fetch') || err.message.includes('NetworkError');
+        const title = isOffline ? 'API Server Offline' : 'Validation / Request Error';
+        const detail = isOffline
+          ? 'Cannot connect to http://localhost:4000. Start the server using start_server.bat.'
+          : err.message;
+
+        document.getElementById('errorTitle').textContent = title;
+        document.getElementById('errorDetail').textContent = detail;
 
         // Trigger floating error toast
-        showToast('error', err.message || 'Failed to submit message');
+        showToast('error', detail);
       } finally {
         submitBtn.disabled = false;
         submitBtn.innerHTML = `
@@ -802,6 +814,26 @@ ${r.error ? `- **Diagnostics / Error:** ${r.error}` : '- **Diagnostics:** None'}
 
       document.getElementById('rawJsonViewer').textContent = JSON.stringify(data, null, 2);
     }
+
+    // Real-Time Health Heartbeat Polling
+    async function checkBackendHealth() {
+      const dot = document.getElementById('navStatusDot');
+      const text = document.getElementById('navStatusText');
+      try {
+        const res = await fetch('/health', { cache: 'no-store' });
+        if (res.ok) {
+          if (dot) dot.style.background = '#10b981';
+          if (text) text.textContent = 'API Online :4000';
+        } else {
+          throw new Error();
+        }
+      } catch (e) {
+        if (dot) dot.style.background = '#ef4444';
+        if (text) text.textContent = 'API Offline :4000';
+      }
+    }
+    setInterval(checkBackendHealth, 3500);
+    checkBackendHealth();
   </script>
 </body>
 </html>
