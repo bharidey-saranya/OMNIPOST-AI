@@ -66,8 +66,8 @@ automated-posting/
 
 ### Step 1: Clone Repository & Create Virtual Environment
 ```bash
-git clone https://github.com/bharidey-saranya/automated-posting.git
-cd automated-posting
+git clone https://github.com/bharidey-saranya/OMNIPOST-AI.git
+cd OMNIPOST-AI
 
 # Create virtual environment
 python -m venv venv
@@ -286,7 +286,7 @@ Dear ChivoxAI / Dxora Team,
 I have completed the Python Practical Test (Automated Multi-Platform Posting System) in accordance with the specification.
 
 1. Full Name: <Your Name>
-2. Public GitHub Repository: https://github.com/bharidey-saranya/automated-posting
+2. Public GitHub Repository: https://github.com/bharidey-saranya/OMNIPOST-AI
 3. Contact Number: <Your Phone Number>
 4. Current Location: <City, State>
 5. Preferred Date and Time for Discussion: <e.g., Weekday after 3:00 PM IST>
